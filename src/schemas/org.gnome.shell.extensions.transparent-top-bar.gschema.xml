@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schemalist>
+    <schema id="org.gnome.shell.extensions.transparent-top-bar" path="/org/gnome/shell/extensions/transparent-top-bar/">
+        <key type="i" name="transparency">
+            <default>35</default>
+            <summary>Top bar opacity</summary>
+            <description>Top bar opacity</description>
+        </key>
+        <key type="b" name="dark-full-screen">
+            <default>true</default>
+            <summary>Dark bar on full screen</summary>
+            <description>If true the bar transparency will be reverted to original state when a window is touching the
+                bar, false and the bar remains transparent at all time
+            </description>
+        </key>
+        <key type="b" name="disable-text-shadow">
+            <default>false</default>
+            <summary>Disable text shadow</summary>
+            <description>If true, text shadows will be disabled in the top bar. If false (default), text will have shadows to improve readability on transparent backgrounds.</description>
+        </key>
+        <key type="b" name="auto-transparency">
+            <default>true</default>
+            <summary>Adapt opacity to the wallpaper</summary>
+            <description>When true, the top bar opacity is measured from the wallpaper behind the
+                panel so panel text keeps at least 4.5:1 contrast, instead of using the fixed
+                opacity slider. Falls back to the slider if the wallpaper cannot be read.
+            </description>
+        </key>
+        <key type="i" name="auto-min-transparency">
+            <range min="0" max="100"/>
+            <default>10</default>
+            <summary>Minimum opacity in auto mode</summary>
+            <description>Auto mode never goes below this, so the bar keeps some presence over very
+                dark wallpapers.</description>
+        </key>
+        <key type="i" name="auto-max-transparency">
+            <range min="0" max="100"/>
+            <default>85</default>
+            <summary>Maximum opacity in auto mode</summary>
+            <description>Auto mode never goes above this, so the bar stays translucent even over a
+                white wallpaper.</description>
+        </key>
+        <key type="i" name="auto-last-opacity">
+            <range min="-1" max="100"/>
+            <default>-1</default>
+            <summary>Last measured opacity</summary>
+            <description>Internal. Remembers the last opacity auto mode computed so the panel can
+                paint at roughly the right value at login instead of visibly cross-fading from the
+                manual value once the async wallpaper measurement lands. -1 means "not measured yet".
+            </description>
+        </key>
+    </schema>
+</schemalist>

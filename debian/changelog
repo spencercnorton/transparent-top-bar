@@ -1,0 +1,7 @@
+gnome-shell-extension-transparent-top-bar (2.0.0) resolute; urgency=medium
+
+  * First public release. The UUID is now
+    transparent-top-bar@spencercnorton.github.io and the settings schema
+    org.gnome.shell.extensions.transparent-top-bar.
+
+ -- Norvi <apt@globalentry.systems>  Tue, 29 Sep 2026 00:00:00 +0000

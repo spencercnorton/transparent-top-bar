@@ -1,15 +1,19 @@
 import Adw from 'gi://Adw';
+import Gio from 'gi://Gio';
 import Gtk from 'gi://Gtk';
 import {ExtensionPreferences, gettext as _} from 'resource:///org/gnome/Shell/Extensions/js/extensions/prefs.js';
 
 const TRANSPARENCY = 'transparency';
 const DARK_FULL_SCREEN = 'dark-full-screen';
 const DISABLE_TEXT_SHADOW = 'disable-text-shadow';
+const AUTO_TRANSPARENCY = 'auto-transparency';
+const AUTO_MIN = 'auto-min-transparency';
+const AUTO_MAX = 'auto-max-transparency';
 
 export default class TransparentTopBarPrefsWidget extends ExtensionPreferences {
 
     fillPreferencesWindow(window) {
-        window._settings = this.getSettings('com.ftpix.transparentbar');
+        window._settings = this.getSettings();
         const opacity = window._settings.get_int(TRANSPARENCY);
         const darkFullScreen = window._settings.get_boolean(DARK_FULL_SCREEN);
         const disableTextShadow = window._settings.get_boolean(DISABLE_TEXT_SHADOW);
@@ -78,6 +82,49 @@ export default class TransparentTopBarPrefsWidget extends ExtensionPreferences {
         group.add(shadowRow);
 
         page.add(group);
+
+        // --- Auto opacity (fork addition) ---
+        const autoGroup = new Adw.PreferencesGroup({
+            title: _('Adapt to wallpaper'),
+            description: _(
+                'Measures the wallpaper behind the panel and picks the lowest opacity that keeps ' +
+                'panel text at 4.5:1 contrast. Overrides the slider above while enabled.'),
+        });
+
+        const autoRow = new Adw.ActionRow({title: _('Adapt opacity to wallpaper')});
+        const autoSwitch = new Gtk.Switch({valign: Gtk.Align.CENTER});
+        window._settings.bind(AUTO_TRANSPARENCY, autoSwitch, 'active', Gio.SettingsBindFlags.DEFAULT);
+        autoRow.add_suffix(autoSwitch);
+        autoRow.activatable_widget = autoSwitch;
+        autoGroup.add(autoRow);
+
+        const addBound = (key, title, subtitle) => {
+            const row = new Adw.SpinRow({
+                title: _(title),
+                subtitle: _(subtitle),
+                adjustment: new Gtk.Adjustment({lower: 0, upper: 100, step_increment: 1}),
+            });
+            // NOT Gio.Settings.bind(): Adw.SpinRow:value is a gdouble and these keys are 'i',
+            // which g_settings_bind refuses to coerce — the row would silently never bind.
+            row.set_value(window._settings.get_int(key));
+            row.connect('notify::value', () => {
+                const rounded = Math.round(row.get_value());
+                if (window._settings.get_int(key) !== rounded) {
+                    window._settings.set_int(key, rounded);
+                }
+            });
+            const changedId = window._settings.connect(`changed::${key}`, () => {
+                row.set_value(window._settings.get_int(key));
+            });
+            row.connect('destroy', () => window._settings.disconnect(changedId));
+            // Meaningless while the fixed slider is in charge.
+            window._settings.bind(AUTO_TRANSPARENCY, row, 'sensitive', Gio.SettingsBindFlags.GET);
+            autoGroup.add(row);
+        };
+        addBound(AUTO_MIN, 'Minimum opacity (%)', 'Keeps some presence over very dark wallpapers');
+        addBound(AUTO_MAX, 'Maximum opacity (%)', 'Stays translucent even over a white wallpaper');
+
+        page.add(autoGroup);
 
         window.add(page);
     }

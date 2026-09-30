@@ -1,0 +1,15 @@
+#!/usr/bin/make -f
+# The top-level Makefile is a developer shorthand that itself calls
+# dpkg-buildpackage, so debhelper must never run it.
+%:
+	dh $@
+
+override_dh_auto_build:
+	sassc src/stylesheet.scss src/stylesheet.css
+
+override_dh_auto_test:
+
+override_dh_auto_install:
+
+override_dh_auto_clean:
+	rm -f src/stylesheet.css

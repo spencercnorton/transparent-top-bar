@@ -1,0 +1,15 @@
+Transparent Top Bar (Auto)
+https://github.com/spencercnorton/transparent-top-bar
+
+This is a fork of Transparent Top Bar by Paul Fauchon and contributors
+(https://github.com/lamarios/gnome-shell-extension-transparent-top-bar),
+itself a fork of Hai Zhang's extension
+(https://github.com/zhanghai/gnome-shell-extension-transparent-top-bar), which
+turned the transparent top bar that GNOME Shell 3.32 removed back into an
+extension. It is based on upstream commit
+74b3ae8576c6f1354218d2f9d6a8d595f6097c7a, whose history it keeps unchanged.
+
+Everything here is licensed under the GNU General Public License, version 2 or
+(at your option) any later version; see LICENSE. The fork's changes, including
+the wallpaper-adaptive opacity (src/luminance.js, src/wallpaper.js), the tests
+and the packaging, are Copyright 2026 Spencer Norton under the same licence.

@@ -1,12 +1,15 @@
-.PHONY: build
-build: $(wildcard src/*)
-	rm -Rf build
-	mkdir -p build/
-	sass src/stylesheet.scss src/stylesheet.css
-	cd src/ && zip -r ../build/transparent-top-bar@com.ftpix.zip .
-	zip -d build/transparent-top-bar@com.ftpix.zip stylesheet.scss
-	zip -d build/transparent-top-bar@com.ftpix.zip stylesheet.css.map
+# The release assets come from scripts/build.sh; this is the local shorthand.
+.PHONY: test build install clean
+test:
+	node scripts/check-opacity.mjs
+	node scripts/smoke.mjs
+	python3 tests/static-check.py
 
-.PHONY: clean
+build: test
+	scripts/build.sh dist
+
+install: build
+	gnome-extensions install --force dist/transparent-top-bar.shell-extension.zip
+
 clean:
-	rm -rf build/
+	rm -rf build/ dist/ src/stylesheet.css src/stylesheet.css.map src/schemas/gschemas.compiled

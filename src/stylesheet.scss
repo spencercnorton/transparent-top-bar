@@ -1,4 +1,5 @@
 #panel.transparent-top-bar {
+    /* environmental motion: 500 ms */
     transition-duration: 500ms;
 }
 
@@ -18,6 +19,7 @@
         background-color: rgba(0, 0, 0, $opacity);
         -panel-corner-border-width: 0px;
         -panel-corner-opacity: $opacity;
+        /* environmental motion: 500 ms */
         transition-duration: 500ms;
         box-shadow:  none;
     }
@@ -86,4 +88,12 @@
 #panel.no-text-shadow:focus .system-status-icon,
 #panel.no-text-shadow:checked .system-status-icon {
     icon-shadow: none !important;
+}
+
+/* Follow the desktop-wide animation preference without changing the transparent/opaque result. */
+#panel.transparent-top-bar-no-motion,
+#panel.transparent-top-bar-no-motion:overview,
+#panel.transparent-top-bar-no-motion .panel-button {
+    /* reduced motion: none */
+    transition-duration: 0ms !important;
 }

@@ -1,0 +1,30 @@
+name: Bug report
+description: The top bar's opacity is wrong for a wallpaper, the text is hard to read, or disabling leaves something behind.
+labels: ["bug", "needs-triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for the report. Please remove machine names, user names and personal paths from anything you paste, and do not attach a personal photo as the wallpaper.
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened
+      description: What you did, what you expected, what happened instead.
+      placeholder: With a mostly white wallpaper the clock was hard to read.
+    validations:
+      required: true
+  - type: textarea
+    id: setup
+    attributes:
+      label: Setup
+      description: Output of `gnome-shell --version`, the number of monitors, and `gsettings get org.gnome.desktop.background picture-options`.
+      render: text
+    validations:
+      required: true
+  - type: textarea
+    id: log
+    attributes:
+      label: Log excerpt
+      description: The relevant lines from `journalctl --user -b | grep -i transparent-top-bar`, scrubbed.
+      render: text

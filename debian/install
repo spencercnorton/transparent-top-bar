@@ -1,0 +1,2 @@
+src/extension.js src/luminance.js src/wallpaper.js src/prefs.js src/metadata.json src/stylesheet.css usr/share/gnome-shell/extensions/transparent-top-bar@spencercnorton.github.io
+src/schemas/org.gnome.shell.extensions.transparent-top-bar.gschema.xml usr/share/glib-2.0/schemas
